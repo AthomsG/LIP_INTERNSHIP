@@ -6,7 +6,7 @@
     
     //CREATES HISTOGRAMS
     TH1* hist_all  = (TH1*)hist_files->Get("AllMuonInvariantMass;1");
-    //TH1* hist_all = (TH1*)hist_files->Get("Passing trackerMuonInvariantMass;1");
+    TH1* hist_pass = (TH1*)hist_files->Get("Passing trackerMuonInvariantMass;1");
     //hist->Draw(); // CHECKS PLOT
  
     //FITTING PARAMETERS
@@ -203,5 +203,6 @@
     frame_pass->Draw("");
     tl->Draw();
     
-    //roofit_canvas.SaveAs("Slide.pdf");
+    //c_all->SaveAs("invariant_mass_ALL.pdf");
+    //c_pass->SaveAs("invariant_mass_PASS.pdf");
 }
