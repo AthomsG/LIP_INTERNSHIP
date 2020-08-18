@@ -3,10 +3,10 @@
 //EFFICIENCY TEST
 
 //PROCURAR TEFFICIENCY
-void Upsilon_Fit()
+void JPsi_fit()
 {
     //ACCESSES THE DIRECTORY IN WHICH THE HISTOGRAM IS STORED
-    TFile* files            = new TFile("DATA/Upsilon_genData.root"); //PATH TO HISTOGRAM
+    TFile* files            = new TFile("generated_hist.root"); //PATH TO HISTOGRAM
     TDirectory* hist_files  = (TDirectory*)files->Get("histograms;1");
     
     //CREATES HISTOGRAMS
@@ -15,7 +15,7 @@ void Upsilon_Fit()
     hist_all->Draw(); // CHECKS PLOT
  
     //FITTING PARAMETERS
-    double _mmin = 9;  double _mmax = 11;
+    double _mmin = 6.1;  double _mmax = 6.4;
     
     
     double mass_peak1 = 9.46030;
