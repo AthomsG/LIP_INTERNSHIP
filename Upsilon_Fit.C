@@ -3,7 +3,7 @@
 //EFFICIENCY TEST
 
 //PROCURAR TEFFICIENCY
-void macro()
+void Upsilon_Fit()
 {
     //ACCESSES THE DIRECTORY IN WHICH THE HISTOGRAM IS STORED
     TFile* files            = new TFile("generated_hist.root"); //PATH TO HISTOGRAM
