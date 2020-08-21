@@ -12,11 +12,10 @@ void Upsilon_Fit()
     //CREATES HISTOGRAMS
     TH1* hist_all  = (TH1*)hist_files->Get("AllMuonInvariantMass;1");
     TH1* hist_pass = (TH1*)hist_files->Get("Passing trackerMuonInvariantMass;1");
-    hist_all->Draw(); // CHECKS PLOT
+    //hist_all->Draw(); // CHECKS PLOT
  
     //FITTING PARAMETERS
     double _mmin = 9;  double _mmax = 11;
-    
     
     double mass_peak1 = 9.46030;
     double mass_peak2 = 10.02326;
@@ -33,7 +32,6 @@ void Upsilon_Fit()
     RooDataHist dh_pass("dh_pass","dh_pass",mass_all,RooFit::Import(*hist_pass));
 
 
-    
     RooRealVar lambda("lambda","lambda",-1.3,-10.,10.);
     RooExponential background("background", "background", mass_all, lambda);
     
@@ -42,7 +40,6 @@ void Upsilon_Fit()
     RooRealVar mean1("mean1","mean1",_mmin,(mass_peak1+mass_peak2)/2.);
     RooRealVar mean2("mean2","mean2",(mass_peak1+mass_peak2)/2.,(mass_peak3+mass_peak2)/2.);
     RooRealVar mean3("mean3","mean3",(mass_peak3+mass_peak2)/2.,_mmax);
-    
     //FIT FUNCTIONS
     
     // --Gaussian as the signal pdf
@@ -78,11 +75,20 @@ void Upsilon_Fit()
     RooPlot *frame_new = mass_all.frame(RooFit::Title("Invariant Mass"));
     
     RooFitResult* fitres = new RooFitResult; //saves fit result
-    fitres = model->fitTo(dh);
+    fitres = model->fitTo(dh, RooFit::Save());
     
-    //PLOTTING
+    // collecting fit results in order to differentiate between signal and background
+    RooRealVar* pass_mean1 = (RooRealVar*) fitres->floatParsFinal().find("mean1");
+    RooRealVar* pass_mean2 = (RooRealVar*) fitres->floatParsFinal().find("mean2");
+    RooRealVar* pass_mean3 = (RooRealVar*) fitres->floatParsFinal().find("mean3");
     
-    //legends
+    RooRealVar* pass_sigma = (RooRealVar*) fitres->floatParsFinal().find("sigma");
+    
+    double mean1_value = pass_mean1->getVal();
+    double mean2_value = pass_mean2->getVal();
+    double mean3_value = pass_mean3->getVal();
+    
+    double sigma_value = pass_sigma->getVal();
     
     //FAKE FUNCTIONS FOR LEGEND CREATION
     TF1* fake1 = new TF1();
@@ -138,6 +144,8 @@ void Upsilon_Fit()
     //PASSING PROBE CANVAS
     model->fitTo(dh_pass);
     
+    RooDataSet *data_pass = model->generate(mass_all, 1000);
+    
     c_pass->cd();
 
     dh_pass.plotOn(frame_new);
@@ -151,4 +159,10 @@ void Upsilon_Fit()
     frame_new->Draw("");
     tl->Draw();
     c_pass->SaveAs("Result/invariant_mass_PASS.pdf");
+    
+    // outputs signal regions -- ASSUMING SIMULTANEOUS FIT
+    cout << "\nThe calculated regions of signal are as follows:\n" << endl;
+    cout << "1st - Gaussian: [" << mean1_value - 3*sigma_value << ", " << mean1_value + 3*sigma_value << "]" << endl;
+    cout << "2nd - Gaussian: [" << mean2_value - 3*sigma_value << ", " << mean2_value + 3*sigma_value << "]" << endl;
+    cout << "3nd - Gaussian: [" << mean3_value - 3*sigma_value << ", " << mean3_value + 3*sigma_value << "]\n" << endl;
 }
