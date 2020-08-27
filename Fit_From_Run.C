@@ -78,7 +78,7 @@ void Fit_From_Run()
     model = new RooAddPdf("model","model", RooArgList(*signal, background),RooArgList(n_signal_total, n_back));
     
     RooFitResult* fitres = new RooFitResult; //saves fit result
-    fitres = model->fitTo(*dh);
+    fitres = model->fitTo(*dh, RooFit::Save());
     
     frame->SetTitle("ALL");
     frame->SetXTitle("#mu^{+}#mu^{-} invariant mass [GeV/c^{2}]");
