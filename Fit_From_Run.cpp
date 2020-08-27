@@ -85,7 +85,7 @@ void test()
     model = new RooAddPdf("model","model", RooArgList(*signal, background),RooArgList(n_signal_total, n_back));
     
     RooFitResult* fitres = new RooFitResult; //saves fit result
-    fitres = model->fitTo(dh, RooFit::Save());
+    fitres = model->fitTo(*Data, RooFit::Save());
     
     RooRealVar* pass_mean1 = (RooRealVar*) fitres->floatParsFinal().find("mean1");
     RooRealVar* pass_mean2 = (RooRealVar*) fitres->floatParsFinal().find("mean2");

@@ -32,23 +32,24 @@ void Fit_From_Run()
     // Create an unbinned dataset that imports contents of TH1 and associates itscontents to observable 'mass'
     RooDataHist* dh = Data_ALL->binnedClone("All Invariant Mass", "All Invariant Mass");
     
-    // PROBLEMAS NO BACKGROUND
     RooRealVar a0("a0", "a0", 0., -100, 100);
     RooRealVar a1("a1", "a1", 0., -100, 100);
-    //RooRealVar a2("a2", "a2", -1000, 1000);
+
     RooChebychev background("cpol","cpol", InvariantMass, RooArgList(a0,a1));
-    
-    //RooRealVar lambda("lambda","lambda",-1.3,-10.,10.);
-    //RooExponential background("background", "background", InvariantMass, lambda);
     
     RooRealVar sigma("sigma","sigma",0.08,0.05,0.1);
     RooRealVar mean1("mean1","mean1",9.4,9.3,9.5);
     RooRealVar mean2("mean2","mean2",10, 9.9, 10.1);
     RooRealVar mean3("mean3","mean3",10.35, 10.2, 10.4);
+    
+    // CRYSTAL BALL VARIABLES
+    RooRealVar alpha("alpha","alpha", 1., 0.01, 10.);
+    RooRealVar n("n", "n", 1.00, 1., 10.);
     //FIT FUNCTIONS
     
     // --Gaussian as the signal pdf
     RooGaussian gaussian1("signal1","signal1",InvariantMass,mean1,sigma);
+    //RooCBShape  gaussian1("signal1","signal1",InvariantMass,mean1,sigma, alpha, n);
     RooGaussian gaussian2("signal2","signal2",InvariantMass,mean2,sigma);
     RooGaussian gaussian3("signal3","signal3",InvariantMass,mean3,sigma);
     
@@ -79,25 +80,10 @@ void Fit_From_Run()
     RooFitResult* fitres = new RooFitResult; //saves fit result
     fitres = model->fitTo(*dh);
     
-    fitres = model->fitTo(*Data_ALL);
-    
-    //RooRealVar* pass_mean1 = (RooRealVar*) fitres->floatParsFinal().find("mean1");
-    //RooRealVar* pass_mean2 = (RooRealVar*) fitres->floatParsFinal().find("mean2");
-    //RooRealVar* pass_mean3 = (RooRealVar*) fitres->floatParsFinal().find("mean3");
-    //
-    //RooRealVar* pass_sigma = (RooRealVar*) fitres->floatParsFinal().find("sigma");
-    //
-    //double mean1_value = pass_mean1->getVal();
-    //double mean2_value = pass_mean2->getVal();
-    //double mean3_value = pass_mean3->getVal();
-    //
-    //double sigma_value = pass_sigma->getVal();
-    
     frame->SetTitle("ALL");
     frame->SetXTitle("#mu^{+}#mu^{-} invariant mass [GeV/c^{2}]");
     //frame->SetYTitle(Form("Events / %3.1f MeV/c^{2}",dh->GetBinWidth(1)*1000));
     dh->plotOn(frame);
-    
     
     model->plotOn(frame);
     model->plotOn(frame,RooFit::Components("signal1"),RooFit::LineStyle(kDashed),RooFit::LineColor(kGreen));
