@@ -15,10 +15,10 @@ void unbinned_sim_fit()
     RooRealVar ProbeMuon_Eta("ProbeMuon_Eta", "ProbeMuon_Eta", -3, 3);
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -3.5, 3.5);
     
-    RooDataSet *Data_ALL     = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt));
-    
+    RooFormulaVar* redeuce = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 4 && ProbeMuon_Pt > 0", RooArgList(ProbeMuon_Pt));
+    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *redeuce);
     //RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon ==  1", RooArgList(PassingProbeTrackingMuon));
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 10", RooArgList(ProbeMuon_Pt));
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 4 && ProbeMuon_Pt > 0 && PassingProbeTrackingMuon == 1", RooArgList(ProbeMuon_Pt, PassingProbeTrackingMuon));
     RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *cutvar);//
     
     //BINNING DATASET
@@ -38,8 +38,8 @@ void unbinned_sim_fit()
     RooPlot *frame = InvariantMass.frame(RooFit::Title("Invariant Mass"));
 
     // BACKGROUND VARIABLES
-    RooRealVar a0("a0", "a0", 0.0258, 0.0257, 0.0259);
-    RooRealVar a1("a1", "a1", -0.078, -0.077, -0.079);
+    RooRealVar a0("a0", "a0", 0, -100, 100);
+    RooRealVar a1("a1", "a1", 0, -100, 100);
     
     RooRealVar a0_pass("a0_pass", "a0_pass", 0., -100, 100);
     RooRealVar a1_pass("a1_pass", "a1_pass", 0., -100, 100);
