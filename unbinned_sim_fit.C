@@ -16,9 +16,9 @@ void unbinned_sim_fit()
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -3.5, 3.5);
     
     RooFormulaVar* redeuce = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 4 && ProbeMuon_Pt > 0", RooArgList(ProbeMuon_Pt));
-    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *redeuce);
+    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt));
     //RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon ==  1", RooArgList(PassingProbeTrackingMuon));
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 4 && ProbeMuon_Pt > 0 && PassingProbeTrackingMuon == 1", RooArgList(ProbeMuon_Pt, PassingProbeTrackingMuon));
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon == 1", RooArgList(ProbeMuon_Pt, PassingProbeTrackingMuon));
     RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *cutvar);//
     
     //BINNING DATASET
@@ -38,15 +38,15 @@ void unbinned_sim_fit()
     RooPlot *frame = InvariantMass.frame(RooFit::Title("Invariant Mass"));
 
     // BACKGROUND VARIABLES
-    RooRealVar a0("a0", "a0", 0, -100, 100);
-    RooRealVar a1("a1", "a1", 0, -100, 100);
+    RooRealVar a0("a0", "a0", 2.5875e-02, 2.58e-02, 2.6e-02);
+    RooRealVar a1("a1", "a1", -7.8407e-02, -8e-02, -7.8e-02);
     
-    RooRealVar a0_pass("a0_pass", "a0_pass", 0., -100, 100);
-    RooRealVar a1_pass("a1_pass", "a1_pass", 0., -100, 100);
+    //RooRealVar a0_pass("a0_pass", "a0_pass", 2.5875e-02, 2.5e-02, 2.6e-02);
+    //RooRealVar a1_pass("a1_pass", "a1_pass", -7.8407e-02, -7.9e-02, -7.8e-02);
     // BACKGROUND FUNCTION
     RooChebychev background("background","background", InvariantMass, RooArgList(a0,a1));
     
-    RooChebychev background_pass("cpol_pass","cpol_pass", InvariantMass, RooArgList(a0_pass,a1_pass));
+    //RooChebychev background_pass("cpol_pass","cpol_pass", InvariantMass, RooArgList(a0_pass,a1_pass));
     // GAUSSIAN VARIABLES
     RooRealVar sigma("sigma","sigma",0.08,0.05,0.1);
     RooRealVar mean1("mean1","mean1",mass_peak1,9.4,9.47);
@@ -111,7 +111,7 @@ void unbinned_sim_fit()
     RooFitResult* fitres = new RooFitResult;
     fitres = simPdf.fitTo(combData, RooFit::Save());
     
-    fitres->Print();
+    fitres->Print("LOG.txt");
          
     // Some Random Stuff like... whaaaa....
     frame->SetTitle("ALL");
@@ -146,7 +146,9 @@ void unbinned_sim_fit()
     
     frame_pass->Draw();
     
-    c_pass->SaveAs("Result/fit_DATA_PASS.pdf");
-    c_all->SaveAs("Result/fit_DATA.pdf");
+    c_pass->SaveAs("Result/unbinned_fit_DATA_PASS.pdf");
+    c_all->SaveAs("Result/unbinned_fit_DATA.pdf");
+    
+    
 }
 
