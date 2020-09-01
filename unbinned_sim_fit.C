@@ -2,32 +2,24 @@ using namespace RooFit ;
 
 void unbinned_sim_fit()
 {
-    TFile *file0  = TFile::Open("Run2011_upsilon.root");
-    TTree *DataTree = (TTree*)file0->Get(("tagandprobe/AnalysisTree"));
-    TTree *Quantities = (TTree*)file0->Get(("tagandprobe/PlotControl"));
-    
-    //float pt, eta, phi;
-    //TBranch *bpt = Quantities->Branch("ProbeMuon_Pt",&pt,"ProbeMuon_Pt");
-    //DataTree->SetBranchAddress("ProbeMuon_Pt",&pt);
+    TFile *file0  = TFile::Open("DATA/T&P_UPSILON_DATA.root");
+    TTree *DataTree = (TTree*)file0->Get(("UPSILON_DATA"));
     
     //I need to add quantities branches to DataTree
     double _mmin = 8.7;  double _mmax = 11;
 
+    RooRealVar PassingProbeTrackingMuon("PassingProbeTrackingMuon", "PassingProbeTrackingMuon", 0, 1);
+    
     RooRealVar InvariantMass("InvariantMass", "InvariantMass", _mmin, _mmax);
-    
-    RooRealVar PassingProbeTrackingMuon("PassingProbeTrackingMuon", "PassingProbeTrackingMuon", 0, 2);
-    RooRealVar PassingProbeStandAloneMuon("PassingProbeStandAloneMuon", "PassingProbeStandAloneMuon", 0, 2);
-    RooRealVar PassingProbeGlobalMuon("PassingProbeGlobalMuon", "PassingProbeGlobalMuon", 0, 2);
-    
-    RooRealVar ProbeMuon_Pt("ProbeMuon_Pt", "ProbeMuon_Pt", 0, 25);
+    RooRealVar ProbeMuon_Pt("ProbeMuon_Pt", "ProbeMuon_Pt", 0, 37.2);
     RooRealVar ProbeMuon_Eta("ProbeMuon_Eta", "ProbeMuon_Eta", -3, 3);
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -3.5, 3.5);
     
-    //RooDataSet *Data_ALL     = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, ProbeMuon_Pt, ProbeMuon_Eta, ProbeMuon_Phi, PassingProbeTrackingMuon, PassingProbeStandAloneMuon, PassingProbeGlobalMuon));
-    RooDataSet *Data_ALL     = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon));
+    RooDataSet *Data_ALL     = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt));
     
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon == 1", RooArgList(PassingProbeTrackingMuon, InvariantMass));
-    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon), *cutvar);
+    //RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon ==  1", RooArgList(PassingProbeTrackingMuon));
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 10", RooArgList(ProbeMuon_Pt));
+    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *cutvar);//
     
     //BINNING DATASET
     RooDataHist* dh_ALL     = Data_ALL->binnedClone();
@@ -44,29 +36,26 @@ void unbinned_sim_fit()
     TCanvas* c_pass = new TCanvas;
     
     RooPlot *frame = InvariantMass.frame(RooFit::Title("Invariant Mass"));
-    
+
+    // BACKGROUND VARIABLES
     RooRealVar a0("a0", "a0", 0.0258, 0.0257, 0.0259);
     RooRealVar a1("a1", "a1", -0.078, -0.077, -0.079);
-
-    RooChebychev background("background","background", InvariantMass, RooArgList(a0,a1));
     
     RooRealVar a0_pass("a0_pass", "a0_pass", 0., -100, 100);
     RooRealVar a1_pass("a1_pass", "a1_pass", 0., -100, 100);
-
-    RooChebychev background_pass("cpol_pass","cpol_pass", InvariantMass, RooArgList(a0_pass,a1_pass));
+    // BACKGROUND FUNCTION
+    RooChebychev background("background","background", InvariantMass, RooArgList(a0,a1));
     
+    RooChebychev background_pass("cpol_pass","cpol_pass", InvariantMass, RooArgList(a0_pass,a1_pass));
+    // GAUSSIAN VARIABLES
     RooRealVar sigma("sigma","sigma",0.08,0.05,0.1);
     RooRealVar mean1("mean1","mean1",mass_peak1,9.4,9.47);
     RooRealVar mean2("mean2","mean2",mass_peak2, 10, 10.03);
     RooRealVar mean3("mean3","mean3",mass_peak3, 10.3, 10.4);
-    
     // CRYSTAL BALL VARIABLES
     RooRealVar alpha("alpha","alpha", 1.4384e+00, 1.43, 1.44);
     RooRealVar n("n", "n", 1.6474e+01, 16., 17.);
-    //FIT FUNCTIONS
-    
-    // --Gaussian as the signal pdf
-    //RooGaussian gaussian1("signal1","signal1",InvariantMass,mean1,sigma);
+    // FIT FUNCTIONS
     RooCBShape  gaussian1("signal1","signal1",InvariantMass,mean1,sigma, alpha, n);
     RooGaussian gaussian2("signal2","signal2",InvariantMass,mean2,sigma);
     RooGaussian gaussian3("signal3","signal3",InvariantMass,mean3,sigma);
