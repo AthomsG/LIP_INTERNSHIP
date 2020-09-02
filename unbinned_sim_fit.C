@@ -15,10 +15,10 @@ void unbinned_sim_fit()
     RooRealVar ProbeMuon_Eta("ProbeMuon_Eta", "ProbeMuon_Eta", -3, 3);
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -3.5, 3.5);
     
-    RooFormulaVar* redeuce = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 4 && ProbeMuon_Pt > 0", RooArgList(ProbeMuon_Pt));
-    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt));
+    RooFormulaVar* redeuce = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 6 && ProbeMuon_Pt > 0", RooArgList(ProbeMuon_Pt));
+    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *redeuce);
     //RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon ==  1", RooArgList(PassingProbeTrackingMuon));
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon == 1", RooArgList(ProbeMuon_Pt, PassingProbeTrackingMuon));
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon == 1 && ProbeMuon_Pt < 6 && ProbeMuon_Pt > 0", RooArgList(ProbeMuon_Pt, PassingProbeTrackingMuon));
     RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *cutvar);//
     
     //BINNING DATASET
@@ -66,7 +66,7 @@ void unbinned_sim_fit()
     
     double n_signal_initial_total = n_signal_initial1 + n_signal_initial2 + n_signal_initial3;
     
-    RooRealVar frac1("frac1","frac1",7.1345e-01,0.7134,0.7135);
+    RooRealVar frac1("frac1","frac1",7.1345e-01,0.71,0.72);
     RooRealVar frac2("frac2","frac2",1.9309e-01,0.193,0.194);
  
     RooAddPdf* signal;
