@@ -6,7 +6,9 @@ void unbinned_sim_fit()
     TTree *DataTree = (TTree*)file0->Get(("UPSILON_DATA"));
     
     //I need to add quantities branches to DataTree
-    double _mmin = 8.7;  double _mmax = 11;
+    
+    //tenho de variar os valores deste corte para diferentes cortes em Pt
+    double _mmin = 9.1;  double _mmax = 10.7;
 
     RooRealVar PassingProbeTrackingMuon("PassingProbeTrackingMuon", "PassingProbeTrackingMuon", 0, 1);
     
@@ -15,10 +17,10 @@ void unbinned_sim_fit()
     RooRealVar ProbeMuon_Eta("ProbeMuon_Eta", "ProbeMuon_Eta", -3, 3);
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -3.5, 3.5);
     
-    RooFormulaVar* redeuce = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 6 && ProbeMuon_Pt > 0", RooArgList(ProbeMuon_Pt));
+    RooFormulaVar* redeuce = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 4 && ProbeMuon_Pt > 3.5", RooArgList(ProbeMuon_Pt));
     RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *redeuce);
     //RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon ==  1", RooArgList(PassingProbeTrackingMuon));
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon == 1 && ProbeMuon_Pt < 6 && ProbeMuon_Pt > 0", RooArgList(ProbeMuon_Pt, PassingProbeTrackingMuon));
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon == 1 && ProbeMuon_Pt < 4 && ProbeMuon_Pt > 3.5", RooArgList(ProbeMuon_Pt, PassingProbeTrackingMuon));
     RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *cutvar);//
     
     //BINNING DATASET
@@ -38,8 +40,8 @@ void unbinned_sim_fit()
     RooPlot *frame = InvariantMass.frame(RooFit::Title("Invariant Mass"));
 
     // BACKGROUND VARIABLES
-    RooRealVar a0("a0", "a0", 2.5875e-02, 2.58e-02, 2.6e-02);
-    RooRealVar a1("a1", "a1", -7.8407e-02, -8e-02, -7.8e-02);
+    RooRealVar a0("a0", "a0", 2.5875e-02, -1., 1.);
+    RooRealVar a1("a1", "a1", -7.8407e-02, -1., 1.);
     
     //RooRealVar a0_pass("a0_pass", "a0_pass", 2.5875e-02, 2.5e-02, 2.6e-02);
     //RooRealVar a1_pass("a1_pass", "a1_pass", -7.8407e-02, -7.9e-02, -7.8e-02);
@@ -66,8 +68,8 @@ void unbinned_sim_fit()
     
     double n_signal_initial_total = n_signal_initial1 + n_signal_initial2 + n_signal_initial3;
     
-    RooRealVar frac1("frac1","frac1",7.1345e-01,0.71,0.72);
-    RooRealVar frac2("frac2","frac2",1.9309e-01,0.193,0.194);
+    RooRealVar frac1("frac1","frac1",7.1345e-01,0.7,0.72);
+    RooRealVar frac2("frac2","frac2",1.9309e-01,0.191,0.194);
  
     RooAddPdf* signal;
     RooAddPdf* signal_pass;
@@ -119,6 +121,7 @@ void unbinned_sim_fit()
     //frame->SetYTitle(Form("Events / %3.1f MeV/c^{2}",dh_ALL->GetBinWidth(1)*1000));
     Data_ALL->plotOn(frame);
     
+    model->paramOn(frame,Layout(0.60,0.90,0.75));
     model->plotOn(frame);
     model->plotOn(frame,RooFit::Components("signal1"),RooFit::LineStyle(kDashed),RooFit::LineColor(kGreen));
     model->plotOn(frame,RooFit::Components("signal2"),RooFit::LineStyle(kDashed),RooFit::LineColor(kMagenta - 5));
@@ -138,6 +141,7 @@ void unbinned_sim_fit()
     frame_pass->SetXTitle("#mu^{+}#mu^{-} invariant mass [GeV/c^{2}]");
     Data_PASSING->plotOn(frame_pass);
     
+    model_pass->paramOn(frame_pass,Layout(0.60,0.70,0.75));
     model_pass->plotOn(frame_pass);
     model_pass->plotOn(frame_pass,RooFit::Components("signal1"),RooFit::LineStyle(kDashed),RooFit::LineColor(kGreen));
     model_pass->plotOn(frame_pass,RooFit::Components("signal2"),RooFit::LineStyle(kDashed),RooFit::LineColor(kMagenta - 5));
@@ -146,9 +150,18 @@ void unbinned_sim_fit()
     
     frame_pass->Draw();
     
-    c_pass->SaveAs("Result/unbinned_fit_DATA_PASS.pdf");
-    c_all->SaveAs("Result/unbinned_fit_DATA.pdf");
+    // P e r s i s t   f i t   r e s u l t   i n   r o o t   f i l e
+    // -------------------------------------------------------------
     
+    // Open new ROOT file save save result
+    TFile f("unbinned_upsilon_fitresult.root","RECREATE") ;
+    fitres->Write("InvariantMass") ;
+    f.Close() ;
     
+    // In a clean ROOT session retrieve the persisted fit result as follows:
+    // RooFitResult* fitres = gDirectory->Get("InvariantMass") ;
+    
+    //c_pass->SaveAs("Result/unbinned_fit_DATA_PASS.pdf");
+    //c_all->SaveAs("Result/unbinned_fit_DATA.pdf");
 }
 
