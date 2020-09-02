@@ -2,7 +2,10 @@ using namespace RooFit ;
 
 void unbinned_sim_fit()
 {
-    bool save = false
+    // FAZER O LOOP DOS FITS E GUARDAR OS RESULTADOS EM PDF CRL!
+    
+    bool save = FALSE;
+    
     TFile *file0  = TFile::Open("DATA/T&P_UPSILON_DATA.root");
     TTree *DataTree = (TTree*)file0->Get(("UPSILON_DATA"));
     
@@ -10,7 +13,8 @@ void unbinned_sim_fit()
     
     //tenho de variar os valores deste corte para diferentes cortes em Pt
     double _mmin = 9.1;  double _mmax = 10.7;
-
+    //double _mmin = 9;  double _mmax = 10.5;
+    
     RooRealVar PassingProbeTrackingMuon("PassingProbeTrackingMuon", "PassingProbeTrackingMuon", 0, 1);
     
     RooRealVar InvariantMass("InvariantMass", "InvariantMass", _mmin, _mmax);
@@ -18,10 +22,10 @@ void unbinned_sim_fit()
     RooRealVar ProbeMuon_Eta("ProbeMuon_Eta", "ProbeMuon_Eta", -3, 3);
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -3.5, 3.5);
     
-    RooFormulaVar* redeuce = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 4 && ProbeMuon_Pt > 3.5", RooArgList(ProbeMuon_Pt));
-    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *redeuce);
+    RooFormulaVar* redeuce = new RooFormulaVar("PPTM", "ProbeMuon_Pt < 4.8 && ProbeMuon_Pt > 4.6", RooArgList(ProbeMuon_Pt));
+    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt),*redeuce);
     //RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon ==  1", RooArgList(PassingProbeTrackingMuon));
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon == 1 && ProbeMuon_Pt < 4 && ProbeMuon_Pt > 3.5", RooArgList(ProbeMuon_Pt, PassingProbeTrackingMuon));
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", "PassingProbeTrackingMuon == 1  && ProbeMuon_Pt < 4.8 && ProbeMuon_Pt > 4.6", RooArgList(PassingProbeTrackingMuon, ProbeMuon_Pt));
     RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Pt), *cutvar);//
     
     //BINNING DATASET
@@ -46,6 +50,7 @@ void unbinned_sim_fit()
     
     //RooRealVar a0_pass("a0_pass", "a0_pass", 2.5875e-02, 2.5e-02, 2.6e-02);
     //RooRealVar a1_pass("a1_pass", "a1_pass", -7.8407e-02, -7.9e-02, -7.8e-02);
+    
     // BACKGROUND FUNCTION
     RooChebychev background("background","background", InvariantMass, RooArgList(a0,a1));
     
@@ -69,7 +74,7 @@ void unbinned_sim_fit()
     
     double n_signal_initial_total = n_signal_initial1 + n_signal_initial2 + n_signal_initial3;
     
-    RooRealVar frac1("frac1","frac1",7.1345e-01,0.7,0.72);
+    RooRealVar frac1("frac1","frac1",7.1345e-01,0.6,0.72);
     RooRealVar frac2("frac2","frac2",1.9309e-01,0.191,0.194);
  
     RooAddPdf* signal;
@@ -101,6 +106,7 @@ void unbinned_sim_fit()
     
     //WHEN DOING UNBINNED, CHANGE TO DATASET
     RooDataHist combData("combData","combined data",InvariantMass,Index(sample),Import("ALL",*dh_ALL),Import("PASSING",*dh_PASSING));
+    //RooDataSet combData("combData","combined data",InvariantMass,Index(sample),Import("ALL", *Data_ALL),Import("PASSING", *Data_PASSING));
    
     // C o n s t r u c t   a   s i m u l t a n e o u s   p d f   i n   ( x , s a m p l e )
     // -----------------------------------------------------------------------------------
