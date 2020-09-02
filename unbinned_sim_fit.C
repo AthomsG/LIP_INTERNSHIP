@@ -2,6 +2,7 @@ using namespace RooFit ;
 
 void unbinned_sim_fit()
 {
+    bool save = false
     TFile *file0  = TFile::Open("DATA/T&P_UPSILON_DATA.root");
     TTree *DataTree = (TTree*)file0->Get(("UPSILON_DATA"));
     
@@ -154,9 +155,12 @@ void unbinned_sim_fit()
     // -------------------------------------------------------------
     
     // Open new ROOT file save save result
-    TFile f("unbinned_upsilon_fitresult.root","RECREATE") ;
-    fitres->Write("InvariantMass") ;
-    f.Close() ;
+    if (save)
+    {
+        TFile f("unbinned_upsilon_fitresult.root","RECREATE") ;
+        fitres->Write("InvariantMass") ;
+        f.Close() ;
+    }
     
     // In a clean ROOT session retrieve the persisted fit result as follows:
     // RooFitResult* fitres = gDirectory->Get("InvariantMass") ;
