@@ -3,14 +3,14 @@
      
     // This is the story of 2 TTrees and how their love manifested itself into physical existance through their offspring... It all started in a TFile...
 {
-    TFile *file0  = TFile::Open("Run2011_upsilon.root");
+    TFile *file0  = TFile::Open("Data/Upsilon1SToMuMu_MC_full.root");
 
     TTree *DataTree = (TTree*)file0->Get(("tagandprobe/AnalysisTree"));
     TTree *PlotControl = (TTree*)file0->Get(("tagandprobe/PlotControl"));
     
     int N_ENTRIES = DataTree->GetEntries(); // -------------------------- LIMIT AMOUNT OF DATA HERE
 
-    TFile Output("T&P_UPSILON_DATA.root", "recreate");
+    TFile Output("T&P_UPSILON_DATA_MC.root", "recreate");
     
     TTree UPSILON_DATA("UPSILON_DATA", "UPSILON_DATA");
     
