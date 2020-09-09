@@ -26,7 +26,7 @@ double* doFit(string condition, bool save = TRUE) // RETURNS ARRAY WITH [yield_a
     double _mmin = 9.1;  double _mmax = 10.6;
     //double _mmin = 8.5;  double _mmax = 11;
     
-    RooRealVar PassingProbeTrackingMuon("PassingProbeTrackingMuon", "PassingProbeTrackingMuon", 0, 1);
+    RooRealVar PassingProbeGlobalMuon("PassingProbeGlobalMuon", "PassingProbeGlobalMuon", 0, 1); //Muon_Id
     
     RooRealVar InvariantMass("InvariantMass", "InvariantMass", _mmin, _mmax);
     RooRealVar ProbeMuon_Pt("ProbeMuon_Pt", "ProbeMuon_Pt", 0, 60);
@@ -34,9 +34,9 @@ double* doFit(string condition, bool save = TRUE) // RETURNS ARRAY WITH [yield_a
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -2, 2);
     
     RooFormulaVar* redeuce = new RooFormulaVar("PPTM", condition.c_str(), RooArgList(ProbeMuon_Eta));
-    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Eta),*redeuce);
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", strcat(condition.c_str(), "&& PassingProbeTrackingMuon == 1"), RooArgList(PassingProbeTrackingMuon, ProbeMuon_Eta));
-    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Eta), *cutvar);//
+    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeGlobalMuon, ProbeMuon_Eta),*redeuce);
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", strcat(condition.c_str(), "&& PassingProbeGlobalMuon == 1"), RooArgList(PassingProbeGlobalMuon, ProbeMuon_Eta));
+    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeGlobalMuon, ProbeMuon_Eta), *cutvar);//
     
     //BINNING DATASET
     //DE RooDataSet -> TH1 -> RooDataHist
@@ -281,7 +281,7 @@ double* McYield(string condition)
     double _mmin = 9.1;  double _mmax = 10.6;
     //double _mmin = 8.5;  double _mmax = 11;
     
-    RooRealVar PassingProbeTrackingMuon("PassingProbeTrackingMuon", "PassingProbeTrackingMuon", 0, 1);
+    RooRealVar PassingProbeGlobalMuon("PassingProbeGlobalMuon", "PassingProbeGlobalMuon", 0, 1);
     
     RooRealVar InvariantMass("InvariantMass", "InvariantMass", _mmin, _mmax);
     RooRealVar ProbeMuon_Pt("ProbeMuon_Pt", "ProbeMuon_Pt", 0, 60);
@@ -289,9 +289,9 @@ double* McYield(string condition)
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -3.5, 3.5);
     
     RooFormulaVar* redeuce = new RooFormulaVar("PPTM", condition.c_str(), RooArgList(ProbeMuon_Eta));
-    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Eta),*redeuce);
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", strcat(condition.c_str(), "&& PassingProbeTrackingMuon == 1"), RooArgList(PassingProbeTrackingMuon, ProbeMuon_Eta));
-    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackingMuon, ProbeMuon_Eta), *cutvar);//
+    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeGlobalMuon, ProbeMuon_Eta),*redeuce);
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", strcat(condition.c_str(), "&& PassingProbeGlobalMuon == 1"), RooArgList(PassingProbeGlobalMuon, ProbeMuon_Eta));
+    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeGlobalMuon, ProbeMuon_Eta), *cutvar);//
     
     
     double* output = new double[2];
@@ -302,16 +302,27 @@ double* McYield(string condition)
 
 void Efficiency()
 {
-    bool DataIsMC = TRUE;
+    bool DataIsMC = FALSE;
     
+    // TRACKER MUON BINS -------------------------------------------------------------------
     //double bins[] = {2, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 4, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6.2, 6.4, 6.6, 6.8, 7.3, 7.6, 8.0, 8.5, 9.0, 10.0, 11.0, 13.0, 17.0, 50.0};
-    //int bin_n = 43;       -- BINS USED TO CALCULATE PT
+    //int bin_n = 43;       //-- BINS USED TO CALCULATE PT
     
     //double bins[] = {-3, -2.8, -2.6, -2.4, -2.2, -2.0, -1.8, -1.6, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.5, 0.6, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0};
-    //int bin_n = 30;       -- BINS USED TO CALCULATE PHI
+    //int bin_n = 30;       //-- BINS USED TO CALCULATE PHI
     
-    double bins[] = {-2.0, -1.9, -1.8, -1.7, -1.6, -1.5, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, 0, 0.2, 0.4, 0.6, 0.7, 0.95, 1.2, 1.4, 1.5, 1.6, 2.0};
-    int bin_n = 23;
+    //double bins[] = {-2.0, -1.9, -1.8, -1.7, -1.6, -1.5, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, 0, 0.2, 0.4, 0.6, 0.7, 0.95, 1.2, 1.4, 1.5, 1.6, 2.0};
+    //int bin_n = 23;       -- BINS USED TO CALCULATE ETA
+    
+    // GLOBAL MUON BINS --------------------------------------------------------------------
+    //double bins[] = { -2.0, -1.8, -1.6, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, -0.2, 0.2, 0.4, 0.5, 0.6, 1.0, 1.2, 1.4, 1.6, 1.8, 2.3};
+    //int bin_n = 19;      //-- BINS USED TO CALCULATE PHI
+    
+    //double bins[] = {2, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 4, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6.2, 6.4, 6.6, 6.8, 7.3, 7.5, 8.0, 8.5, 9.0, 10.0, 11.0, 13.0, 17.0, 50.0};
+    //int bin_n = 43;       //-- BINS USED TO CALCULATE PT
+    
+    double bins[] = {-2.0, -1.9, -1.8, -1.7, -1.6, -1.5, -1.4, -1.2, -1.1, -0.8, -0.6, -0.4, 0, 0.2, 0.4, 0.6, 0.7, 1.0, 1.2, 1.4, 1.5, 1.6, 2.0};
+    int bin_n = 22;       // -- BINS USED TO CALCULATE ETA
     
     string* conditions = get_conditions(bin_n, bins);
     double ** yields_n_errs = new double*[bin_n]; // [yield_all, yield_pass, err_all, err_pass]
@@ -322,7 +333,7 @@ void Efficiency()
         if (DataIsMC)
             yields_n_errs[i] = McYield(conditions[i]);
         else
-            yields_n_errs[i] = doFit(conditions[i], TRUE);
+            yields_n_errs[i] = doFit(conditions[i], FALSE);
     }
     
 

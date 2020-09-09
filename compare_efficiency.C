@@ -35,7 +35,7 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
         cerr << "Could not read the path in file0\n";
         abort();
     }
-    
+
     if (pEff1 == NULL)
     {
         cerr << "Could not read the path in file1\n";
@@ -51,11 +51,17 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
     pEff0->SetMarkerColor(colorScheme[useScheme][0]);
     pEff0->SetLineColor(colorScheme[useScheme][0]);
     pEff0->Draw();
+    gPad->Update();
+
+    pEff0->SetTitle("Efficiency of Global Probe Muon;_{p}T (GeV/c);Efficiency");
+    //pEff0->SetTitle("Efficiency of Global Probe Muon;#eta;Efficiency");
+    //pEff0->SetTitle("Efficiency of Global Probe Muon;#phi;Efficiency");
+
 
     pEff1->SetMarkerColor(colorScheme[useScheme][1]);
     pEff1->SetLineColor(colorScheme[useScheme][1]);
     pEff1->Draw("same");
-    
+
     //Set range in y axis
     gPad->Update();
     auto graph = pEff0->GetPaintedGraph();
@@ -63,24 +69,26 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
     graph->SetMaximum(1.2);
     gPad->Update();
 
-    /*
+
+    
     // IF PT
         pEff0->GetPaintedGraph()->GetHistogram()->GetXaxis()->SetRangeUser(0.,80.);
         //graph->SetMinimum(0.0);
         graph->SetMaximum(1.4);
-    */
+     
     /*
     // IF ETA
         pEff0->GetPaintedGraph()->GetHistogram()->GetXaxis()->SetRangeUser(-3.,3.);
         //graph->SetMinimum(0.8);
         graph->SetMaximum(1.3);
     */
-    
+    /*
     // IF PHI
         pEff0->GetPaintedGraph()->GetHistogram()->GetXaxis()->SetRangeUser(-3.,3.);
         graph->SetMinimum(0.40);
         graph->SetMaximum(1.25);
-
+     */
+    
 
     //Legenda
     TLegend* tl = new TLegend(0.68,0.78,0.94,0.88);
@@ -96,12 +104,6 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
     txCOD->SetTextFont(42);
     txCOD->SetNDC(kTRUE);
     txCOD->DrawLatex(0.14,0.85,Form("#bf{CMS Open Data}"));
-
-
-
-
-
-
 
     //Saving as png
 
@@ -128,7 +130,7 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
     }
 
     //Path of file
-    string saveAs = string(directoryToSave) + string(pEff0->GetName()) + ".png";
+    string saveAs = string(directoryToSave) + string(pEff0->GetName()) + ".pdf";
 
     c1->SaveAs(saveAs.data());
 }
@@ -136,8 +138,8 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
 //Compare efficiency
 void compare_efficiency()
 {
-    TFile *file1 = TFile::Open("Result/Efficiencies/Phi/Efficiency_MC.root");
-    TFile *file0 = TFile::Open("Result/Efficiencies/Phi/Efficiency_Run2011.root");
+    TFile *file1 = TFile::Open("Result/Efficiencies/Global/Pt/Efficiency_MC.root");
+    TFile *file0 = TFile::Open("Result/Efficiencies/Global/Pt/Efficiency_Run2011.root");
 
     if (file0 == NULL || file1 == NULL)
     {
