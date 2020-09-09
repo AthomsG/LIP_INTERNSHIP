@@ -53,9 +53,9 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
     pEff0->Draw();
     gPad->Update();
 
-    pEff0->SetTitle("Efficiency of Global Probe Muon;_{p}T (GeV/c);Efficiency");
-    //pEff0->SetTitle("Efficiency of Global Probe Muon;#eta;Efficiency");
-    //pEff0->SetTitle("Efficiency of Global Probe Muon;#phi;Efficiency");
+    //pEff0->SetTitle("Efficiency of Tracker Probe Muon;_{p}T (GeV/c);Efficiency");
+    pEff0->SetTitle("Efficiency of Tracker Probe Muon;#eta;Efficiency");
+    pEff0->SetTitle("Efficiency of Tracker Probe Muon;#phi;Efficiency");
 
 
     pEff1->SetMarkerColor(colorScheme[useScheme][1]);
@@ -70,24 +70,24 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
     gPad->Update();
 
 
-    
+    /*
     // IF PT
         pEff0->GetPaintedGraph()->GetHistogram()->GetXaxis()->SetRangeUser(0.,80.);
         //graph->SetMinimum(0.0);
         graph->SetMaximum(1.4);
-     
-    /*
+    */
+    
     // IF ETA
         pEff0->GetPaintedGraph()->GetHistogram()->GetXaxis()->SetRangeUser(-3.,3.);
         //graph->SetMinimum(0.8);
         graph->SetMaximum(1.3);
-    */
-    /*
+    
+    
     // IF PHI
         pEff0->GetPaintedGraph()->GetHistogram()->GetXaxis()->SetRangeUser(-3.,3.);
         graph->SetMinimum(0.40);
         graph->SetMaximum(1.25);
-     */
+     
     
 
     //Legenda
@@ -138,8 +138,8 @@ void compare_plot(TFile *file0, TFile *file1, const char* path)
 //Compare efficiency
 void compare_efficiency()
 {
-    TFile *file1 = TFile::Open("Result/Efficiencies/Global/Pt/Efficiency_MC.root");
-    TFile *file0 = TFile::Open("Result/Efficiencies/Global/Pt/Efficiency_Run2011.root");
+    TFile *file1 = TFile::Open("Result/Efficiencies/Tracker/Phi/Efficiency_MC.root");
+    TFile *file0 = TFile::Open("Result/Efficiencies/Tracker/Phi/Efficiency_Run2011.root");
 
     if (file0 == NULL || file1 == NULL)
     {
