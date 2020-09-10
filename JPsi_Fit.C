@@ -1,5 +1,9 @@
 #include "RooRealVar.h"
+#include "RooFitResult.h"
 #include "RooDataSet.h"
+#include "RooDataHist.h"
+#include "RooCbShape.h"
+#inlcude "TEfficiency.h"
 #include "RooGaussian.h"
 #include "RooConstVar.h"
 #include "RooChebychev.h"
@@ -9,7 +13,8 @@
 #include "TCanvas.h"
 #include "TAxis.h"
 #include "TFile.h"
-#include "TH1.h"
+#include "TH1F.h"
+#include "TTree.h"
 
 using namespace RooFit;
 
