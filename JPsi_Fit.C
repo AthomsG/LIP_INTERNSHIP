@@ -36,7 +36,7 @@ char* strcat(string destination, string source)
 
 double* doFit(string condition)
 {
-    TFile* file0            = new TFile("DATA/JPsi/TP_JPSI_DATA.root"); //PATH TO HISTOGRAM
+    TFile* file0            = new TFile("DATA/JPsi/T&P_JPSI_DATA.root"); //PATH TO HISTOGRAM
     TTree *DataTree = (TTree*)file0->Get(("JPSI_DATA"));
     
     string file     = "Result/";
