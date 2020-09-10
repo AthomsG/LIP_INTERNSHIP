@@ -2,6 +2,7 @@
 #include "TFile.h"
 #include "RooFit.h"
 #include "RooFitResult.h"
+#include "RooRealVar.h"
 
 //EFFICIENCY TEST
 char* strcat(string destination, string source)
