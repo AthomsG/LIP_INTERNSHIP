@@ -124,7 +124,6 @@ double* doFit(string condition, bool save = TRUE) // RETURNS ARRAY WITH [yield_a
     fitres = simPdf.fitTo(combData, RooFit::Save());
     
     // OUTPUT ARRAY
-    RooRealVar** fit_return = new RooRealVar*[2];
     double* output = new double[4];
     
     RooRealVar* yield_ALL = (RooRealVar*) fitres->floatParsFinal().find("n_signal_total");
