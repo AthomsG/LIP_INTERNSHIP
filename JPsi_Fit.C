@@ -1,3 +1,6 @@
+#include "TCanvas.h"
+#include "TFile.h"
+#include "RooFit.h"
 #include "RooFitResult.h"
 
 //EFFICIENCY TEST
