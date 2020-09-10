@@ -3,7 +3,7 @@
 #include "RooDataSet.h"
 #include "RooDataHist.h"
 #include "RooCbShape.h"
-#inlcude "TEfficiency.h"
+#include "TEfficiency.h"
 #include "RooGaussian.h"
 #include "RooConstVar.h"
 #include "RooChebychev.h"
