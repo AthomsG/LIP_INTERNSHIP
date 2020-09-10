@@ -3,16 +3,16 @@
      
     // This is the story of 2 TTrees and how their love manifested itself into physical existance through their offspring... It all started in a TFile...
 {
-    TFile *file0  = TFile::Open("DATA/Full Data_HIDDEN/Run2011.root");
+    TFile *file0  = TFile::Open("DATA/Full Data_HIDDEN/Run2011_Jpsi.root");
 
     TTree *DataTree = (TTree*)file0->Get(("tagandprobe/AnalysisTree"));
     TTree *PlotControl = (TTree*)file0->Get(("tagandprobe/PlotControl"));
     
     int N_ENTRIES = DataTree->GetEntries(); // -------------------------- LIMIT AMOUNT OF DATA HERE
 
-    TFile Output("T&P_UPSILON_DATA.root", "recreate");
+    TFile Output("T&P_JPSI_DATA.root", "recreate");
     
-    TTree UPSILON_DATA("UPSILON_DATA", "UPSILON_DATA");
+    TTree UPSILON_DATA("JPSI_DATA", "JPSI_DATA");
     
     Int_t PassingProbeStandAloneMuon;
     Double_t InvariantMass, ProbeMuon_Pt, ProbeMuon_Eta, ProbeMuon_Phi;
