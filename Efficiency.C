@@ -19,14 +19,14 @@ char* strcat(string destination, string source)
 
 double* doFit(string condition, bool save = TRUE) // RETURNS ARRAY WITH [yield_all, yield_pass, err_all, err_pass]    ->   OUTPUT ARRAY
 {
-    TFile *file0    = TFile::Open("DATA/standaloneMuon/T&P_UPSILON_DATA.root");
+    TFile *file0    = TFile::Open("DATA/Upsilon/Tracker/T&P_UPSILON_DATA.root");
     TTree *DataTree = (TTree*)file0->Get(("UPSILON_DATA"));
     
     //tenho de variar os valores deste corte para diferentes cortes em Pt
     double _mmin = 9.1;  double _mmax = 10.6;
     //double _mmin = 8.5;  double _mmax = 11;
     
-    RooRealVar PassingProbeStandAloneMuon("PassingProbeStandAloneMuon", "PassingProbeStandAloneMuon", 0, 1); //Muon_Id
+    RooRealVar PassingProbeTrackerMuon("PassingProbeTrackerMuon", "PassingProbeTrackerMuon", 0, 1); //Muon_Id
     
     RooRealVar InvariantMass("InvariantMass", "InvariantMass", _mmin, _mmax);
     RooRealVar ProbeMuon_Pt("ProbeMuon_Pt", "ProbeMuon_Pt", 0, 60);
@@ -34,9 +34,9 @@ double* doFit(string condition, bool save = TRUE) // RETURNS ARRAY WITH [yield_a
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -2, 2);
     
     RooFormulaVar* redeuce = new RooFormulaVar("PPTM", condition.c_str(), RooArgList(ProbeMuon_Phi));
-    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeStandAloneMuon, ProbeMuon_Phi),*redeuce);
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", strcat(condition.c_str(), "&& PassingProbeStandAloneMuon == 1"), RooArgList(PassingProbeStandAloneMuon, ProbeMuon_Phi));
-    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeStandAloneMuon, ProbeMuon_Phi), *cutvar);//
+    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackerMuon, ProbeMuon_Phi),*redeuce);
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", strcat(condition.c_str(), "&& PassingProbeTrackerMuon == 1"), RooArgList(PassingProbeTrackerMuon, ProbeMuon_Phi));
+    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackerMuon, ProbeMuon_Phi), *cutvar);//
     
     //BINNING DATASET
     //DE RooDataSet -> TH1 -> RooDataHist
@@ -246,7 +246,7 @@ TH1F* make_hist(string name, double** values, int qnt, int bin_n, Double_t* binn
 
 TEfficiency* get_efficiency(TH1F* ALL, TH1F* PASS)
 {
-    TFile* pFile = new TFile("Efficiency.root","recreate");
+    TFile* pFile = new TFile("Efficiency_Run2011.root","recreate");
     TEfficiency* pEff = new TEfficiency();
     pEff->SetName("Efficiency");
     pEff->SetPassedHistogram(*PASS, "f");
@@ -273,14 +273,14 @@ TEfficiency* get_efficiency(TH1F* ALL, TH1F* PASS)
 
 double* McYield(string condition)
 {
-    TFile *file0    = TFile::Open("DATA/standaloneMuon/T&P_UPSILON_DATA.root");
+    TFile *file0    = TFile::Open("DATA/TrackerMuon/T&P_UPSILON_DATA.root");
     TTree *DataTree = (TTree*)file0->Get(("UPSILON_DATA"));
     
     //tenho de variar os valores deste corte para diferentes cortes em Pt
     double _mmin = 9.1;  double _mmax = 10.6;
     //double _mmin = 8.5;  double _mmax = 11;
     
-    RooRealVar PassingProbeStandAloneMuon("PassingProbeStandAloneMuon", "PassingProbeStandAloneMuon", 0, 1);
+    RooRealVar PassingProbeTrackerMuon("PassingProbeTrackerMuon", "PassingProbeTrackerMuon", 0, 1);
     
     RooRealVar InvariantMass("InvariantMass", "InvariantMass", _mmin, _mmax);
     RooRealVar ProbeMuon_Pt("ProbeMuon_Pt", "ProbeMuon_Pt", 0, 60);
@@ -288,9 +288,9 @@ double* McYield(string condition)
     RooRealVar ProbeMuon_Phi("ProbeMuon_Phi", "ProbeMuon_Phi", -3.5, 3.5);
     
     RooFormulaVar* redeuce = new RooFormulaVar("PPTM", condition.c_str(), RooArgList(ProbeMuon_Phi));
-    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeStandAloneMuon, ProbeMuon_Phi),*redeuce);
-    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", strcat(condition.c_str(), "&& PassingProbeStandAloneMuon == 1"), RooArgList(PassingProbeStandAloneMuon, ProbeMuon_Phi));
-    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeStandAloneMuon, ProbeMuon_Phi), *cutvar);//
+    RooDataSet *Data_ALL    = new RooDataSet("DATA", "DATA", DataTree, RooArgSet(InvariantMass, PassingProbeTrackerMuon, ProbeMuon_Phi),*redeuce);
+    RooFormulaVar* cutvar = new RooFormulaVar("PPTM", strcat(condition.c_str(), "&& PassingProbeTrackerMuon == 1"), RooArgList(PassingProbeTrackerMuon, ProbeMuon_Phi));
+    RooDataSet *Data_PASSING = new RooDataSet("DATA_PASS", "DATA_PASS", DataTree, RooArgSet(InvariantMass, PassingProbeTrackerMuon, ProbeMuon_Phi), *cutvar);//
     
     
     double* output = new double[2];
@@ -301,14 +301,14 @@ double* McYield(string condition)
 
 void Efficiency()
 {
-    bool DataIsMC = TRUE;
+    bool DataIsMC = false;
     
     // TRACKER MUON BINS -------------------------------------------------------------------
     //double bins[] = {2, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 4, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6.2, 6.4, 6.6, 6.8, 7.3, 7.6, 8.0, 8.5, 9.0, 10.0, 11.0, 13.0, 17.0, 50.0};
     //int bin_n = 43;       //-- BINS USED TO CALCULATE PT
     
-    //double bins[] = {-3, -2.8, -2.6, -2.4, -2.2, -2.0, -1.8, -1.6, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.5, 0.6, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0};
-    //int bin_n = 30;       //-- BINS USED TO CALCULATE PHI
+    double bins[] = {-3, -2.8, -2.6, -2.4, -2.2, -2.0, -1.8, -1.6, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.5, 0.6, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0};
+    int bin_n = 30;       //-- BINS USED TO CALCULATE PHI
     
     //double bins[] = {-2.0, -1.9, -1.8, -1.7, -1.6, -1.5, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, 0, 0.2, 0.4, 0.6, 0.7, 0.95, 1.2, 1.4, 1.5, 1.6, 2.0};
     //int bin_n = 23;       -- BINS USED TO CALCULATE ETA
@@ -330,13 +330,12 @@ void Efficiency()
     //double bins[] = {-2.0, -1.9, -1.8, -1.7, -1.6, -1.5, -1.4, -1.1, -1.0, -0.8, -0.6, -0.4, 0, 0.2, 0.4, 0.6, 0.7, 0.9, 1.2, 1.4, 1.5, 1.6, 2.0};
     //int bin_n = 22;      // -- BINS USED TO CALCULATE ETA
     
-    double bins[] = {-2.0, -1.8, -1.6, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, -0.2, 0.2, 0.4, 0.5, 0.6, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0};
-    int bin_n = 19;       //-- BINS USED TO CALCULATE PHI
+    //double bins[] = {-2.0, -1.8, -1.6, -1.4, -1.2, -1.0, -0.8, -0.6, -0.4, -0.2, 0.2, 0.4, 0.5, 0.6, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0};
+    //int bin_n = 19;       //-- BINS USED TO CALCULATE PHI
        
     
     string* conditions = get_conditions(bin_n, bins);
     double ** yields_n_errs = new double*[bin_n]; // [yield_all, yield_pass, err_all, err_pass]
-    
 
     for (int i = 0; i < bin_n; i++)
     {
