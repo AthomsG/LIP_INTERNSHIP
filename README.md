@@ -1,16 +1,16 @@
 # Calculating Efficiencies using Tag & Probe
 
-> Tag &amp; probe efficiency fitting method project
+> Tag &amp; probe efficiency fitting method project for 
 
 ## Setup
 
 This project was developed using [ROOT](https://root.cern.ch/root/html534/guides/users-guide/InstallandBuild.html), made available by CERN.
 
-* [0] DoubleMu_data_ntuples.tar - obsolete (Old ntupple. Need to be merged. Current name after merge should be `data_histoall.root`)
+From the files made available to us:
 * [1] [Run2011AMuOnia_mergeNtuple.root](https://drive.google.com/drive/u/0/folders/1Nu9Al7SV1F60TMFxKZVBIMvgEWAdzida)
 * [2] [JPsiToMuMu_mergeMCNtuple.root](https://drive.google.com/drive/u/0/folders/1Nu9Al7SV1F60TMFxKZVBIMvgEWAdzida)
 
-After download one of those files, you can run the code. Don't forget to use `useNewData` (int) var in `macro.cpp` file to set which ntupple did you choose. Just set the current id above of it.
+a '.root' file was generated for each MuonId (i.e *Standalone*, *Tracker* or *Global*) and then stored on the 'Data' folder, following the respective hierarchy.
 
 ## Preferences
 
