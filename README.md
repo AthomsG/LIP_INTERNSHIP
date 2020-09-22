@@ -17,8 +17,10 @@ From these two datasets, a `.root` file was generated for each MuonId (i.e *Stan
 
 ## WorkFlow
 
-`Efficiency.C` is given as an example of how to use the fitting method to calculate an efficiency.
-First the user has to manually define the bins in which the quantity being studied (i.e. pT, Eta, Phi) will be divided
+`Efficiency.C` is given as an example of how to use the fitting method to calculate an efficiency. It follows as such:
+1. The user has to manually define the bins in which the quantity being studied (i.e. pT, Eta, Phi) will be divided;
+2. Generate ```cpp string* 
+
 
 ## Preferences
 
