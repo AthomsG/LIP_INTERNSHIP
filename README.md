@@ -6,11 +6,11 @@
 
 This project was developed using [ROOT](https://root.cern.ch/root/html534/guides/users-guide/InstallandBuild.html), made available by CERN.
 
-From the files made available to us:
+And the following Datasets:
 * [1] [Run2011AMuOnia_mergeNtuple.root](https://drive.google.com/drive/u/0/folders/1Nu9Al7SV1F60TMFxKZVBIMvgEWAdzida)
 * [2] [JPsiToMuMu_mergeMCNtuple.root](https://drive.google.com/drive/u/0/folders/1Nu9Al7SV1F60TMFxKZVBIMvgEWAdzida)
 
-a '.root' file was generated for each MuonId (i.e *Standalone*, *Tracker* or *Global*) and then stored on the 'Data' folder, following the respective hierarchy.
+From these two datasets, a '.root' file was generated for each MuonId (i.e *Standalone*, *Tracker* or *Global*) and then stored on the 'Data' folder, following the respective hierarchy.
 
 ## Preferences
 
