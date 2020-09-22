@@ -14,6 +14,10 @@ From these two datasets, a `.root` file was generated for each MuonId (i.e *Stan
 
 <img src="images/esquema.png">
 
+img.resize {
+  max-width:50%;
+  max-height:50%;
+}
 
 ## WorkFlow
 
