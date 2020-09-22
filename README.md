@@ -12,7 +12,7 @@ From these two datasets, a `.root` file was generated for each MuonId (i.e *Stan
 
 ## Fitting Method
 
-<img width="100px src="images/esquema.png">
+<img width="100px" src="images/esquema.png">
 
 ## WorkFlow
 
