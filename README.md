@@ -4,7 +4,8 @@
 
 ## Setup
 
-The analysed datas are from those files:
+This project was developed using [ROOT](https://root.cern.ch/root/html534/guides/users-guide/InstallandBuild.html), made available by CERN.
+
 * [0] DoubleMu_data_ntuples.tar - obsolete (Old ntupple. Need to be merged. Current name after merge should be `data_histoall.root`)
 * [1] [Run2011AMuOnia_mergeNtuple.root](https://drive.google.com/drive/u/0/folders/1Nu9Al7SV1F60TMFxKZVBIMvgEWAdzida)
 * [2] [JPsiToMuMu_mergeMCNtuple.root](https://drive.google.com/drive/u/0/folders/1Nu9Al7SV1F60TMFxKZVBIMvgEWAdzida)
@@ -24,10 +25,6 @@ Change this line to specify the ntupple you are analysing by choosing 0 (old ntu
 ```cpp
 int useNewData = 1;
 ```
-
-## Requirements
-
-This project was developed using [ROOT](https://root.cern.ch/root/html534/guides/users-guide/InstallandBuild.html), made available by CERN.
 
 ## Running
 
