@@ -10,6 +10,8 @@ This project was developed using [ROOT](https://root.cern.ch/root/html534/guides
 
 From these two datasets, a `.root` file was generated for each MuonId (i.e *Standalone*, *Tracker* or *Global*) and then stored on the `Data` folder, following the respective hierarchy.
 
+## WorkFlow
+
 ## Preferences
 
 You can change the method to estimate signal region by modifying `Muon.setMethod(1)` line by choosing 1 (estimate by FWHM of histograms) or 2 (estimate by FWHM of fitting):
