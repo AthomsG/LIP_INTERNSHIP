@@ -13,8 +13,9 @@ From these two datasets, a `.root` file was generated for each MuonId (i.e *Stan
 ## Fitting Method
 
 <div style="display:flex">
+  The fitting method consists in dividing the quantity we want to use to calculate the efficiency into a certain amout of bins and then fitting the invariant mass of the muons (All and Passing) on the specified region.
+  To compute the efficiency we simply divide the yield from the fit of the Passing muons by the yield of the fit of All the muons
   <img width="500px" style="margin: auto; display: block;" src="images/esquema.png"></img> 
-  Oi lindas estou aqui no html
 </div>
 
 
