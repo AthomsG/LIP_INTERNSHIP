@@ -10,7 +10,14 @@ This project was developed using [ROOT](https://root.cern.ch/root/html534/guides
 
 From these two datasets, a `.root` file was generated for each MuonId (i.e *Standalone*, *Tracker* or *Global*) and then stored on the `Data` folder, following the respective hierarchy.
 
+## Fitting Method
+
+
+
 ## WorkFlow
+
+`Efficiency.C` is given as an example of how to use the fitting method to calculate an efficiency.
+First the user has to manually define the bins in which the quantity being studied (i.e. pT, Eta, Phi) will be divided
 
 ## Preferences
 
