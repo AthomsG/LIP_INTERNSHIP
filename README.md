@@ -19,22 +19,8 @@ From these two datasets, a `.root` file was generated for each MuonId (i.e *Stan
 
 `Efficiency.C` is given as an example of how to use the fitting method to calculate an efficiency. It follows as such:
 1. The user has to manually define the bins in which the quantity being studied (i.e. pT, Eta, Phi) will be divided;
-2. Generate ```cpp string* 
-
-
-## Preferences
-
-You can change the method to estimate signal region by modifying `Muon.setMethod(1)` line by choosing 1 (estimate by FWHM of histograms) or 2 (estimate by FWHM of fitting):
-
-```cpp
-Muon.setMethod(1);
-```
-
-Change this line to specify the ntupple you are analysing by choosing 0 (old ntupple), 1 (run 2011 ntupple) or 2 (monte carlo ntupple):
-
-```cpp
-int useNewData = 1;
-```
+2. Generate conditions (that divide the dataset into the defined binned intervals) using ```get_conditions```;
+3. Create a loop that fits the invariant mass for each bin using ```doFit```when the dataset consists of real data and ```McYield``` for the Monte Carlo dataset.
 
 ## Running
 
@@ -48,4 +34,4 @@ root[1] macro()
 ```
 
 ## Output
-Output images are stored in the `result` folder.
+Output images are stored in the `/result` folder.
