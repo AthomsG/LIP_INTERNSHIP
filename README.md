@@ -24,13 +24,10 @@ From these two datasets, a `.root` file was generated for each MuonId (i.e *Stan
 
 ## Running
 
-Go on your folder where the file code is downloaded and run:
+On this repository, do:
 
 ```sh
-$ cd main
-$ root -l -n
-root[0] .L macro.cpp+
-root[1] macro()
+root -l -b -q Efficiency.C
 ```
 
 ## Output
