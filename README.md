@@ -17,8 +17,6 @@ To compute the efficiency we simply divide the yield from the fit of the Passing
   
 <img width="500px" src="images/esquema.png">
 
-
-
 ## WorkFlow
 
 `Efficiency.C` is given as an example of how to use the fitting method to calculate an efficiency. It follows as such:
