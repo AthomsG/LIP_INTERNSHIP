@@ -11,7 +11,7 @@ string ```MuonID_str``` specifies the Muon ID that we want to study.
 ```cpp
 TH1F* make_hist(string name, double** values, int qnt, int bin_n, Double_t* binning, bool IsDataMc, bool DRAW = FALSE)
 ```
-Generates *TH1F* histograms direclty from ```values``` which stores ```doFit```'s outputs. ```qnt```specifies if the histogram stores data from All muons or from Probe muons.
+Generates ###TH1F### histograms direclty from ```values``` which stores ```doFit```'s outputs. ```qnt```specifies if the histogram stores data from All muons or from Probe muons.
 ## get_efficiency(...)
 ```cpp
 TEfficiency* get_efficiency(TH1F* ALL, TH1F* PASS)
