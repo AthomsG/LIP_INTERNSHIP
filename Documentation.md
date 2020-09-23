@@ -35,7 +35,7 @@ Function used to calculate the efficiency.
 ```cpp
 void change_bin(string condition, string hist_file = "Histograms_Run2011.root")
 ```
-Once the Macro ```Efficiency.C```finishes running, sometimes we are left with poor fit results (sometimes the results are terrible on a specific bin!). This functions allows changes on a spe
+Once the Macro ```Efficiency.C```finishes running, sometimes we are left with poor fit results (sometimes the results are terrible on a specific bin!). This functions allows changes on a specific bin. It is recommended to change the initial conditions of the fitting parameters, on the ```doFit```function.
 # Auxiliary Functions
 
 ## get_TTree_from_ntupple(...)
