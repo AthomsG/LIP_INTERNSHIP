@@ -4,7 +4,7 @@
 ```cpp
 double* doFit(string condition, string MuonID_str, bool save = TRUE) // RETURNS ARRAY WITH [yield_all, yield_pass, err_all, err_pass]
 ```
-fitting function. Has as an input a string ```condition``` that specifies the cut to be applied to the dataset (The location to the ```.root```is set inside the function).
+Funtion that handles the fitting. Has as an input a string ```condition``` that specifies the cut to be applied to the dataset (The location to the ```.root```is set inside the function).
 string ```MuonID_str```specifies the Muon ID that we want to study. 
 
 ## make_hist(...)
